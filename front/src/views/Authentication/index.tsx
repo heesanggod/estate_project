@@ -6,6 +6,7 @@ import SignUpBackground from 'src/assets/image/sign-up-background.png';
 import InputBox from "src/components/Inputbox";
 import { IdCheckRequestDto } from "src/apis/auth/dto/request";
 import { IdCheckRequest } from "src/apis/auth";
+import ResponseDto from "src/apis/response.dto";
 
 //                    type                    //
 type AuthPage = 'sign-in' | 'sign-up';
@@ -127,6 +128,25 @@ function SignUp({ onLinkClickHandler }: Props) {
     const isSignUpActive = isIdCheck && isEmailCheck && isAuthNumberCheck && isPasswordPattern && isEqualPassword;
     const signUpButtonClass = `${isSignUpActive ? 'primary' : 'disable'}-button full-width`;
 
+    //                         function                          //
+    const idCheckResponse = (result: ResponseDto | null) => {
+
+        const idMessage =
+            !result ? '서버에 문제가 있습니다.':
+            result.code === 'VF' ? '아이디는 빈 값 혹은 공백으로만 이루어질 수 없습니다.' :
+            result.code === 'DI' ? '이미 사용중인 아이디입니다.' :
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' :
+            result.code === 'SU' ? '사용 가능한 아이디입니다.' : '';
+        
+        const idError = !(result && result.code === 'SU');
+        const idCheck = !idError;
+
+        setIdMessage(idMessage);
+        setIdError(idError);
+        setIdCheck(idCheck);
+        
+    };
+
     //                    event handler                    //
     const onIdChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
@@ -193,7 +213,7 @@ function SignUp({ onLinkClickHandler }: Props) {
         if(!id || !id.trim()) return;
         
         const requestBody: IdCheckRequestDto = { userId: id };
-        IdCheckRequest(requestBody).then();
+        IdCheckRequest(requestBody).then(idCheckResponse);
     };
 
     const onEmailButtonClickHandler = () => {
