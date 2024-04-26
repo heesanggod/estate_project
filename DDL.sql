@@ -83,3 +83,5 @@ CREATE TABLE board (
 ## 개발자 계정 생성
 CREATE USER 'developer'@'%' IDENTIFIED BY 'P!ssw0rd';
 GRANT ALL PRIVILEGES ON estate.* TO 'developer'@'%';
+
+DROP USER 'developer'@'localhost';
