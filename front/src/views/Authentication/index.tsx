@@ -4,8 +4,8 @@ import "./style.css";
 import SignInBackground from 'src/assets/image/sign-in-background.png';
 import SignUpBackground from 'src/assets/image/sign-up-background.png';
 import InputBox from "src/components/Inputbox";
-import { EmailAuthRequestDto, IdCheckRequestDto } from "src/apis/auth/dto/request";
-import { IdCheckRequest, emailAuthRequest } from "src/apis/auth";
+import { EmailAuthCheckRequestDto, EmailAuthRequestDto, IdCheckRequestDto } from "src/apis/auth/dto/request";
+import { IdCheckRequest, emailAuthCheckRequest, emailAuthRequest } from "src/apis/auth";
 import ResponseDto from "src/apis/response.dto";
 
 //                    type                    //
@@ -162,7 +162,11 @@ function SignUp({ onLinkClickHandler }: Props) {
         setEmailCheck(emailCheck);
         setEmailError(emailError);
 
-    }
+    };
+
+    const emailAuthCheckResponse = (result: ResponseDto | null) => {
+
+    };
 
     //                    event handler                    //
     const onIdChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -251,13 +255,13 @@ function SignUp({ onLinkClickHandler }: Props) {
 
     const onAuthNumberButtonClickHandler = () => {
         if(!authNumberButtonStatus) return;
+        if (!authNumber) return;
 
-        const authNumberCheck = authNumber === '1234';
-        setAuthNumberCheck(authNumberCheck);
-        setAuthNumberError(!authNumberCheck);
-
-        const authNumberMessage = authNumberCheck ? '인증번호가 확인되었습니다.' : '인증번호가 일치하지 않습니다.';
-        setAuthNumberMessage(authNumberMessage);
+        const requestBody: EmailAuthCheckRequestDto = {
+            userEmail: email,
+            authNumber     // authNumber: authNumber 일때 이름이 같으면 : 뒤 생략가능
+        }
+        emailAuthCheckRequest(requestBody).then(emailAuthCheckResponse);
     };
 
     const onSignUpButtonClickHandler = () => {
