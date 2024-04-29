@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import "./style.css";
 
 import SignInBackground from 'src/assets/image/sign-in-background.png';
@@ -9,8 +9,26 @@ import { IdCheckRequest, emailAuthCheckRequest, emailAuthRequest, signInRequest,
 import ResponseDto from "src/apis/response.dto";
 import { SignInResponseDto } from "src/apis/auth/dto/response";
 import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { LOCAL_ABSOLUTE_PATH } from "src/constant";
+
+export function Sns () {
+
+    const { accessToken, expires } = useParams();
+    const [cookies, setCookie] = useCookies();
+
+    const navigator = useNavigate();
+
+    useEffect(() => {
+        if (!accessToken || !expires) return;
+        const expiration = new Date(Date.now() + (Number(expires) * 1000));
+        setCookie('accessToken', accessToken, { path: '/', expires: expiration });
+
+        navigator(LOCAL_ABSOLUTE_PATH);
+    }, []);
+
+    return <></>;
+}
 
 //                    type                    //
 type AuthPage = 'sign-in' | 'sign-up';
@@ -25,7 +43,7 @@ function SnsContainer({ title }: SnsContainerProps) {
 
     //                    event handler                    //
     const onSnsButtonClickHandler = (type: 'kakao' | 'naver') => {
-        alert(type);
+        window.location.href = 'http://localhost:4000/api/v1/auth/oauth2/' + type;
     };
 
     //                    render                    //
@@ -159,7 +177,7 @@ function SignUp({ onLinkClickHandler }: Props) {
     const idCheckResponse = (result: ResponseDto | null) => {
 
         const idMessage =
-            !result ? '서버에 문제가 있습니다.':
+            !result ? '서버에 문제가 있습니다.' :
             result.code === 'VF' ? '아이디는 빈 값 혹은 공백으로만 이루어질 수 없습니다.' :
             result.code === 'DI' ? '이미 사용중인 아이디입니다.' :
             result.code === 'DBE' ? '서버에 문제가 있습니다.' :
@@ -176,12 +194,12 @@ function SignUp({ onLinkClickHandler }: Props) {
     const emailAuthResponse = (result: ResponseDto | null) => {
 
         const emailMessage = 
-            !result ? '서버에 문제가 있습니다.':
-            result.code === 'VF' ? '이메일 형식이 아닙니다.':
-            result.code === 'DE' ? '중복된 이메일입니다.':
-            result.code === 'MF' ? '인증번호 전송에 실패했습니다.':
-            result.code === 'DBE' ? '서버에 문제가 있습니다.':
-            result.code === 'SU' ? '인증번호가 전송되었습니다.': '';
+            !result ? '서버에 문제가 있습니다.' :
+            result.code === 'VF' ? '이메일 형식이 아닙니다.' :
+            result.code === 'DE' ? '중복된 이메일입니다.' :
+            result.code === 'MF' ? '인증번호 전송에 실패했습니다.' :
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' :
+            result.code === 'SU' ? '인증번호가 전송되었습니다.' : '';
         const emailCheck =  result !== null && (result.code === 'SU');
         const emailError = !emailCheck;
 

@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import './App.css';
 import { Route, Routes, useNavigate } from 'react-router';
-import { AUTH_ABSOLUTE_PATH, AUTH_PATH, LOCAL_ABSOLUTE_PATH, LOCAL_PATH, QNA_DETAIL_PATH, QNA_PATH, QNA_UPDATE_PATH, QNA_WRITE_PATH, RATIO_PATH, SERVICE_PATH } from './constant';
+import { AUTH_ABSOLUTE_PATH, AUTH_PATH, LOCAL_ABSOLUTE_PATH, LOCAL_PATH, QNA_DETAIL_PATH, QNA_PATH, QNA_UPDATE_PATH, QNA_WRITE_PATH, RATIO_PATH, SERVICE_PATH, SNS_PATH } from './constant';
 import ServiceContainer from './layouts/ServiceContainer';
-import Authentication from './views/Authentication';
+import Authentication, { Sns } from './views/Authentication';
 import Local from './views/service/Local';
 import Ratio from './views/service/Ratio';
 import QnaList from './views/service/qna/QnaList';
@@ -29,7 +29,6 @@ function Index() {
     else navigator(AUTH_ABSOLUTE_PATH);
   }, []);
 
-
    //                          render                           //
   return <></>;
 }
@@ -41,6 +40,7 @@ function App() {
   return (
     <Routes>
       <Route index element={<Index />} />
+      <Route path={SNS_PATH} element={<Sns />} />
       <Route path={AUTH_PATH} element={<Authentication />} />
       <Route path={SERVICE_PATH} element={<ServiceContainer />} >
         <Route path={LOCAL_PATH} element={<Local />} />
