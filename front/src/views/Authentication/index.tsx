@@ -4,8 +4,8 @@ import "./style.css";
 import SignInBackground from 'src/assets/image/sign-in-background.png';
 import SignUpBackground from 'src/assets/image/sign-up-background.png';
 import InputBox from "src/components/Inputbox";
-import { EmailAuthCheckRequestDto, EmailAuthRequestDto, IdCheckRequestDto } from "src/apis/auth/dto/request";
-import { IdCheckRequest, emailAuthCheckRequest, emailAuthRequest } from "src/apis/auth";
+import { EmailAuthCheckRequestDto, EmailAuthRequestDto, IdCheckRequestDto, SignUpRequestDto } from "src/apis/auth/dto/request";
+import { IdCheckRequest, emailAuthCheckRequest, emailAuthRequest, signUpRequest } from "src/apis/auth";
 import ResponseDto from "src/apis/response.dto";
 
 //                    type                    //
@@ -166,6 +166,38 @@ function SignUp({ onLinkClickHandler }: Props) {
 
     const emailAuthCheckResponse = (result: ResponseDto | null) => {
 
+        const authNumberMessage = 
+            !result ? '서버에 문제가 있습니다.' :
+            result.code === 'VF' ? '인증번호를 입력해주세요.' :
+            result.code === 'AF' ? '인증번호가 일치하지 않습니다.' :
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' :
+            result.code === 'SU' ? '인증번호가 확인되었습니다.' : '';
+        const authNumberCheck = result !== null && result.code === 'SU';
+        const authNumberError = !authNumberCheck;
+
+        setAuthNumberMessage(authNumberMessage);
+        setAuthNumberCheck(authNumberCheck);
+        setAuthNumberError(authNumberError);
+
+    };
+
+    const signUpResponse = (result: ResponseDto | null) => {
+
+        const message = 
+            !result ? '서버에 문제가 있습니다.' :
+            result.code === 'VF' ? '입력 형식이 맞지 않습니다.' :
+            result.code === 'DI' ? '이미 사용중인 아이디입니다.' :
+            result.code === 'DE' ? '중복된 이메일입니다.' :
+            result.code === 'AF' ? '인증번호가 일치하지 않습니다.' :
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : ''
+
+        const isSuccess = result && result.code === 'SU';
+        if (!isSuccess) {
+            alert(message);
+            return;
+        }
+        onLinkClickHandler();
+
     };
 
     //                    event handler                    //
@@ -265,8 +297,19 @@ function SignUp({ onLinkClickHandler }: Props) {
     };
 
     const onSignUpButtonClickHandler = () => {
-        if(!isSignUpActive) return;
-        alert('회원가입');
+            if(!isSignUpActive) return;
+            if(!id || !password || !passwordCheck || !email || !authNumber) {
+                alert('모든 내용을 입력해주세요.');
+                return;
+        }
+
+        const requestBody: SignUpRequestDto = {
+            userId: id,
+            userPassword: password,
+            userEmail: email,
+            authNumber
+        }
+        signUpRequest(requestBody).then(signUpResponse);
     };
 
     //                    render                    //
