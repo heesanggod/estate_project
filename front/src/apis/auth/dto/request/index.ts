@@ -1,6 +1,6 @@
 // description: 로그인 Request Body DTO 
 export interface SignInRequestDto {
-    userID: string;
+    userId: string;
     userPassword: string;
 }
 
