@@ -11,12 +11,12 @@ export default function ServiceContainer() {
             <div className="top-bar-container">
                 <div className="top-bar-title">지역 평균</div>
                 <div className="second-button">로그아웃</div>
-            </div>
+        </div>
             <div className="side-navigation-container">
                 <div className="side-navigation-item active">
                     <div className="side-navigation-icon chart"></div>
                     <div className="side-navigation-title">지역 평균</div>
-                </div>
+            </div>
                 <div className="side-navigation-item">
                     <div className="side-navigation-icon pie"></div>
                     <div className="side-navigation-title">비율 계산</div>
