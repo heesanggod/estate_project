@@ -14,17 +14,17 @@ import com.estate.back.entity.BoardEntity;
 import lombok.Getter;
 
 @Getter
-public class GetBoardListResponseDto extends ResponseDto {
+public class GetSearchBoardListResponseDto extends ResponseDto {
 
     private List<BoardListItem> boardList;
     
-    private GetBoardListResponseDto (List<BoardEntity> boardEntities) throws Exception {
+    private GetSearchBoardListResponseDto (List<BoardEntity> boardEntities) throws Exception {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
         this.boardList = BoardListItem.getList(boardEntities);
     }
 
-    public static ResponseEntity<GetBoardListResponseDto> success (List<BoardEntity> boardEntities) throws Exception {
-        GetBoardListResponseDto responseBody = new GetBoardListResponseDto(boardEntities);
+    public static ResponseEntity<GetSearchBoardListResponseDto> success (List<BoardEntity> boardEntities) throws Exception {
+        GetSearchBoardListResponseDto responseBody = new GetSearchBoardListResponseDto(boardEntities);
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
     
