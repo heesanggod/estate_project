@@ -53,7 +53,7 @@ export default function QnaList() {
     const [boardList, setBoardList] = useState<BoardListItem[]>([]);
     const [viewList, setViewList] = useState<BoardListItem[]>([]);
     const [totalLength, setTotalLength] = useState<number>(0);
-    const [totalPage, setTotalPage] = useState<number>(1);
+    const [totalPage, setTotalPage] = useState<number>(1);  // useState 훅은 초기 상태값을 받음 1 = 컴포넌트가 렌더링될 때의 초기 값 이후에 상태가 업데이트될 때 사용되는 기본값
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [pageList, setPageList] = useState<number[]>([1]);
     const [totalSection, setTotalSection] = useState<number>(1);
@@ -65,7 +65,7 @@ export default function QnaList() {
     //                    function                    //
     const navigator = useNavigate();
 
-    const changePage = (boardList: BoardListItem[], totalLength: number) => {
+    const changePage = (boardList: BoardListItem[], totalLength: number) => {  // 현재 페이지에 따라 보여줄 목록을 설정하는 함수
         const startIndex = (currentPage - 1) * COUNT_PER_PAGE;
         let endIndex = currentPage * COUNT_PER_PAGE;
         if (endIndex > totalLength - 1) endIndex = totalLength;
@@ -73,7 +73,7 @@ export default function QnaList() {
         setViewList(viewList);
     };
 
-    const changeSection = (totalPage: number ) => {
+    const changeSection = (totalPage: number ) => {  // 현재 섹션에 따라 페이지 목록을 설정하는 함수
         const startPage = (currentSection * COUNT_PER_SECTION) - (COUNT_PER_SECTION - 1);
         let endPage = currentSection * COUNT_PER_SECTION;
         if (endPage > totalPage) endPage =  totalPage;
@@ -82,7 +82,7 @@ export default function QnaList() {
         setPageList(pageList);
     };
 
-    const changeBoardList = (boardList: BoardListItem[]) => {
+    const changeBoardList = (boardList: BoardListItem[]) => {  // 게시글 목록을 업데이트하고 페이지 및 섹션 설정 함수를 호출하는 함수
         setBoardList(boardList);
 
         const totalLength = boardList.length;  // ?
