@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import './style.css'
 
 //                     component                      //
@@ -30,7 +30,7 @@ export default function QnaDetail() {
                 <div className='primary-bedge'>답변</div>
                 <div className='qna-detail-comment'>답변입니다.</div>
             </div>
-            <div className='qna-button-box'>
+            <div className='qna-detail-button-box'>
                 <div className='primary-button'>목록보기</div>
                 <div className='qna-detail-owner-button-box'>
                     <div className='second-button'>수정</div>
