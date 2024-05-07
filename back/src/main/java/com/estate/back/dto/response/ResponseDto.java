@@ -36,6 +36,12 @@ public class ResponseDto {
             new ResponseDto(ResponseCode.DUPLICATED_EMAIL, ResponseMessage.DUPLICATED_EMAIL);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
+    
+    public static ResponseEntity<ResponseDto> noExistBoard() {
+        ResponseDto responseBody =
+            new ResponseDto(ResponseCode.NO_EXIST_BOARD, ResponseMessage.NO_EXIST_BOARD);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+    }
 
     public static ResponseEntity<ResponseDto> signInFailed() {
         ResponseDto responseBody =
