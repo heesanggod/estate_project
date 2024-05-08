@@ -115,8 +115,8 @@ export default function QnaList() {
         const { boardList } = result as GetBoardListResponseDto;
         changeBoardList(boardList);
 
-        setCurrentPage(1);
-        setCurrentSection(1);
+        setCurrentPage(!boardList.length ? 0 : 1);
+        setCurrentSection(!boardList.length ? 0 : 1);
     };
 
     const getSearchBoardListResponse = (result: GetSearchBoardListResponseDto | ResponseDto | null) => {
@@ -136,8 +136,8 @@ export default function QnaList() {
         const { boardList } = result as GetSearchBoardListResponseDto;
         changeBoardList(boardList);
 
-        setCurrentPage(1);
-        setCurrentSection(1);
+        setCurrentPage(!boardList.length ? 0 : 1);
+        setCurrentSection(!boardList.length ? 0 : 1);
     };
 
     //                    event handler                    //
