@@ -10,33 +10,33 @@ import useUserStore from "src/stores/user.store";
 
 type Path = '지역 평균' | '비율 계산' | 'Q&A 게시판' | '';
 
-//                  interface                 //
+//                    interface                    //
 interface Props {
     path: Path;
 }
 
-//                  component                  //
-function TopBar ({ path }: Props) {
+//                    component                    //
+function TopBar({ path }: Props) {
 
-    //                  state                  //
+    //                    state                    //
     const { loginUserRole } = useUserStore();
     const [cookies, setCookie, removeCookie] = useCookies();
 
-    //                  function                 //
+    //                    function                    //
     const navigator = useNavigate();
 
-    //                  event handler                  //
+    //                    event handler                    //
     const onLogoutClickHandler = () => {
         removeCookie('accessToken', { path: '/' });
         navigator(AUTH_ABSOLUTE_PATH);
     };
 
-    //                  render                  //
+    //                    render                    //
     return (
         <>
         <div className="logo-container">임대주택 가격 서비스</div>
         <div className="top-bar-container">
-            <div className="top-bar-title">{path}</div>
+            <div className="top-bar-title">{ path }</div>
             <div className="top-bar-right">
                 { loginUserRole === 'ROLE_ADMIN' && <div className="top-bar-role">관리자</div> }
                 <div className="second-button" onClick={onLogoutClickHandler}>로그아웃</div>
@@ -46,23 +46,29 @@ function TopBar ({ path }: Props) {
     );
 }
 
-//                  component                  //
-function SideNavigation ({ path }: Props) {
+//                    component                    //
+function SideNavigation({ path }: Props) {
 
     const localClass = `side-navigation-item${path === '지역 평균' ? ' active' : ''}`;
     const ratioClass = `side-navigation-item${path === '비율 계산' ? ' active' : ''}`;
     const qnaClass = `side-navigation-item${path === 'Q&A 게시판' ? ' active' : ''}`;
 
-    //                  function                  //
+    //                    state                    //
+    const { pathname } = useLocation();
+
+    //                    function                    //
     const navigator = useNavigate();
 
-    //              event handler               //
+    //                    event handler                    //
     const onLocalClickHandler = () => navigator(LOCAL_ABSOLUTE_PATH);
     const onRatioClickHandler = () => navigator(RATIO_ABSOLUTE_PATH);
-    const onQnaClickHandler = () => navigator(QNA_LIST_ABSOLUTE_PATH);
+    const onQnaClickHandler = () => {
+        if (pathname === QNA_LIST_ABSOLUTE_PATH) window.location.reload();
+        else navigator(QNA_LIST_ABSOLUTE_PATH);
+    };
 
-    //                  render                  //
-    return(
+    //                    render                    //
+    return (
         <div className="side-navigation-container">
             <div className={localClass} onClick={onLocalClickHandler}>
                 <div className="side-navigation-icon chart"></div>
@@ -80,22 +86,22 @@ function SideNavigation ({ path }: Props) {
     );
 }
 
-//                  component                  //
+//                    component                    //
 export default function ServiceContainer() {
 
-    //                  state                  //
+    //                    state                    //
     const { pathname } = useLocation();
     const { setLoginUserId, setLoginUserRole } = useUserStore();
     const [cookies] = useCookies();
     const [path, setPath] = useState<Path>('');
 
-    //                  function                  //
+    //                    function                    //
     const navigator = useNavigate();
 
     const getSignInUserResponse = (result: GetSignInUserResponseDto | ResponseDto | null) => {
 
         const message = 
-            !result ? '서버에 문제가 있습니다.' : 
+            !result ? '서버에 문제가 있습니다.' :
             result.code === 'AF' ? '인증에 실패했습니다.' :
             result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
@@ -111,7 +117,7 @@ export default function ServiceContainer() {
 
     };
 
-    //                  effect                  //
+    //                    effect                    //
     useEffect(() => {
         const path = 
             pathname === LOCAL_ABSOLUTE_PATH ? '지역 평균' :
@@ -132,11 +138,11 @@ export default function ServiceContainer() {
 
     }, [cookies.accessToken]);
 
-    //                  render                  //
+    //                    render                    //
     return (
         <div id="wrapper">
             <TopBar path={path} />
-        <SideNavigation path={path} />
+            <SideNavigation path={path} />
             <div className="main-container">
                 <Outlet />
             </div>

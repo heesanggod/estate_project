@@ -1,4 +1,5 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+
+import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import "./style.css";
 
 import SignInBackground from 'src/assets/image/sign-in-background.png';
@@ -12,13 +13,17 @@ import { useCookies } from "react-cookie";
 import { useNavigate, useParams } from "react-router";
 import { LOCAL_ABSOLUTE_PATH } from "src/constant";
 
+//                    component                    //
 export function Sns () {
 
+    //                    state                    //
     const { accessToken, expires } = useParams();
     const [cookies, setCookie] = useCookies();
 
+    //                    function                    //
     const navigator = useNavigate();
 
+    //                    effect                    //
     useEffect(() => {
         if (!accessToken || !expires) return;
         const expiration = new Date(Date.now() + (Number(expires) * 1000));
@@ -27,6 +32,7 @@ export function Sns () {
         navigator(LOCAL_ABSOLUTE_PATH);
     }, []);
 
+    //                    render                    //
     return <></>;
 }
 
@@ -74,14 +80,14 @@ function SignIn({ onLinkClickHandler }: Props) {
 
     const [message, setMessage] = useState<string>('');
 
-    //                           function                          //
+    //                    function                    //
     const navigator = useNavigate();
 
     const signInResponse = (result: SignInResponseDto | ResponseDto | null) => {
 
-        const message = 
+        const message =
             !result ? '서버에 문제가 있습니다.' :
-            result.code === 'VF' ? '아이디와 비밀번호를 모두 입력하세요.' :
+            result.code === 'VF' ? '아이디와 비밀번호를 모두 입력하세요.' : 
             result.code === 'SF' ? '로그인 정보가 일치하지 않습니다.' :
             result.code === 'TF' ? '서버에 문제가 있습니다.' :
             result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
@@ -108,8 +114,13 @@ function SignIn({ onLinkClickHandler }: Props) {
         setMessage('');
     };
 
-    const onSignInButtonClickHandler = () => {
+    const onPasswordKeydownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+        if (event.key !== 'Enter') return;
+        onSignInButtonClickHandler();
+    };
 
+    const onSignInButtonClickHandler = () => {
+        
         if (!id || !password) {
             setMessage('아이디와 비밀번호를 모두 입력하세요.');
             return;
@@ -120,7 +131,7 @@ function SignIn({ onLinkClickHandler }: Props) {
             userPassword: password
         }
         signInRequest(requestBody).then(signInResponse);
-
+        
     };
 
     //                    render                    //
@@ -128,7 +139,7 @@ function SignIn({ onLinkClickHandler }: Props) {
         <div className="authentication-contents">
             <div className="authentication-input-container">
                 <InputBox label="아이디" type="text" value={id} placeholder="아이디를 입력해주세요" onChangeHandler={onIdChangeHandler} />
-                <InputBox label="비밀번호" type="password" value={password} placeholder="비밀번호를 입력해주세요" onChangeHandler={onPasswordChangeHandler} message={message} error />
+                <InputBox label="비밀번호" type="password" value={password} placeholder="비밀번호를 입력해주세요" onChangeHandler={onPasswordChangeHandler} onkeydownHandler={onPasswordKeydownHandler} message={message} error />
             </div>
             <div className="authentication-button-container">
                 <div className="primary-button full-width" onClick={onSignInButtonClickHandler}>로그인</div>
@@ -173,34 +184,34 @@ function SignUp({ onLinkClickHandler }: Props) {
     const isSignUpActive = isIdCheck && isEmailCheck && isAuthNumberCheck && isPasswordPattern && isEqualPassword;
     const signUpButtonClass = `${isSignUpActive ? 'primary' : 'disable'}-button full-width`;
 
-    //                         function                          //
+    //                    function                    //
     const idCheckResponse = (result: ResponseDto | null) => {
 
-        const idMessage =
+        const idMessage = 
             !result ? '서버에 문제가 있습니다.' :
             result.code === 'VF' ? '아이디는 빈 값 혹은 공백으로만 이루어질 수 없습니다.' :
-            result.code === 'DI' ? '이미 사용중인 아이디입니다.' :
+            result.code === 'DI' ?  '이미 사용중인 아이디입니다.' :
             result.code === 'DBE' ? '서버에 문제가 있습니다.' :
             result.code === 'SU' ? '사용 가능한 아이디입니다.' : '';
-        
         const idError = !(result && result.code === 'SU');
         const idCheck = !idError;
 
         setIdMessage(idMessage);
         setIdError(idError);
         setIdCheck(idCheck);
+
     };
 
     const emailAuthResponse = (result: ResponseDto | null) => {
 
         const emailMessage = 
-            !result ? '서버에 문제가 있습니다.' :
+            !result ? '서버에 문제가 있습니다.' : 
             result.code === 'VF' ? '이메일 형식이 아닙니다.' :
             result.code === 'DE' ? '중복된 이메일입니다.' :
             result.code === 'MF' ? '인증번호 전송에 실패했습니다.' :
-            result.code === 'DBE' ? '서버에 문제가 있습니다.' :
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : 
             result.code === 'SU' ? '인증번호가 전송되었습니다.' : '';
-        const emailCheck =  result !== null && (result.code === 'SU');
+        const emailCheck = result !== null && result.code === 'SU';
         const emailError = !emailCheck;
 
         setEmailMessage(emailMessage);
@@ -212,8 +223,8 @@ function SignUp({ onLinkClickHandler }: Props) {
     const emailAuthCheckResponse = (result: ResponseDto | null) => {
 
         const authNumberMessage = 
-            !result ? '서버에 문제가 있습니다.' :
-            result.code === 'VF' ? '인증번호를 입력해주세요.' :
+            !result ? '서버에 문제가 있습니다.' : 
+            result.code === 'VF' ? '인증번호를 입력해주세요.' : 
             result.code === 'AF' ? '인증번호가 일치하지 않습니다.' :
             result.code === 'DBE' ? '서버에 문제가 있습니다.' :
             result.code === 'SU' ? '인증번호가 확인되었습니다.' : '';
@@ -230,7 +241,7 @@ function SignUp({ onLinkClickHandler }: Props) {
 
         const message = 
             !result ? '서버에 문제가 있습니다.' :
-            result.code === 'VF' ? '입력 형식이 맞지 않습니다.' :
+            result.code === 'VF' ? '입력 형식이 맞지 않습니다.' : 
             result.code === 'DI' ? '이미 사용중인 아이디입니다.' :
             result.code === 'DE' ? '중복된 이메일입니다.' :
             result.code === 'AF' ? '인증번호가 일치하지 않습니다.' :
@@ -309,7 +320,7 @@ function SignUp({ onLinkClickHandler }: Props) {
     const onIdButtonClickHandler = () => {
         if(!idButtonStatus) return;
         if(!id || !id.trim()) return;
-        
+
         const requestBody: IdCheckRequestDto = { userId: id };
         IdCheckRequest(requestBody).then(idCheckResponse);
     };
@@ -332,20 +343,20 @@ function SignUp({ onLinkClickHandler }: Props) {
 
     const onAuthNumberButtonClickHandler = () => {
         if(!authNumberButtonStatus) return;
-        if (!authNumber) return;
+        if(!authNumber) return;
 
         const requestBody: EmailAuthCheckRequestDto = {
             userEmail: email,
-            authNumber     // authNumber: authNumber 일때 이름이 같으면 : 뒤 생략가능
-        }
+            authNumber
+        };
         emailAuthCheckRequest(requestBody).then(emailAuthCheckResponse);
     };
 
     const onSignUpButtonClickHandler = () => {
-            if(!isSignUpActive) return;
-            if(!id || !password || !passwordCheck || !email || !authNumber) {
-                alert('모든 내용을 입력해주세요.');
-                return;
+        if(!isSignUpActive) return;
+        if(!id || !password || !passwordCheck || !email || !authNumber) {
+            alert('모든 내용을 입력해주세요.');
+            return;
         }
 
         const requestBody: SignUpRequestDto = {
