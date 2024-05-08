@@ -83,7 +83,7 @@ export default function QnaList() {
     };
 
     const changeBoardList = (boardList: BoardListItem[]) => {  // 게시글 목록을 업데이트하고 페이지 및 섹션 설정 함수를 호출하는 함수
-        if (!isToggleOn) boardList = boardList.filter(board => !board.status);            // filter
+        if (isToggleOn) boardList = boardList.filter(board => !board.status);            // filter
         setBoardList(boardList);
 
         const totalLength = boardList.length;  // ?
@@ -135,7 +135,7 @@ export default function QnaList() {
 
         const { boardList } = result as GetSearchBoardListResponseDto;
         changeBoardList(boardList);
-        
+
         setCurrentPage(1);
         setCurrentSection(1);
     };
@@ -238,7 +238,7 @@ export default function QnaList() {
                 </div>
                 <div className='qna-list-search-box'>
                     <div className='qna-list-search-input-box'>
-                        <input className='qna-list-search-input' placeholder='검색어를 입력하세요.' value={searchWord} onChange={onSearchWordChangeHandler}/>
+                        <input className='qna-list-search-input' placeholder='검색어를 입력하세요.' value={searchWord} onChange={onSearchWordChangeHandler} />
                     </div>
                     <div className={searchButtonClass} onClick={onSearchButtonClickHandler}>검색</div>
                 </div>
