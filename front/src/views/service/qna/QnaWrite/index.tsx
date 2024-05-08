@@ -51,7 +51,7 @@ export default function QnaWrite() {
 
         if (!contentsRef.current) return;
         contentsRef.current.style.height = 'auto';
-        contentsRef.current.style.height = `${contentsRef.current.scrollHeight}px`
+        contentsRef.current.style.height = `${contentsRef.current.scrollHeight}px`;
     };
 
     const onPostButtonClickHandler = () => {
