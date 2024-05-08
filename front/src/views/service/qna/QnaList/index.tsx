@@ -83,6 +83,7 @@ export default function QnaList() {
     };
 
     const changeBoardList = (boardList: BoardListItem[]) => {  // 게시글 목록을 업데이트하고 페이지 및 섹션 설정 함수를 호출하는 함수
+        if (!isToggleOn) boardList = boardList.filter(board => !board.status);            // filter
         setBoardList(boardList);
 
         const totalLength = boardList.length;  // ?
@@ -113,6 +114,9 @@ export default function QnaList() {
 
         const { boardList } = result as GetBoardListResponseDto;
         changeBoardList(boardList);
+
+        setCurrentPage(1);
+        setCurrentSection(1);
     };
 
     const getSearchBoardListResponse = (result: GetSearchBoardListResponseDto | ResponseDto | null) => {
@@ -131,9 +135,9 @@ export default function QnaList() {
 
         const { boardList } = result as GetSearchBoardListResponseDto;
         changeBoardList(boardList);
+        
         setCurrentPage(1);
         setCurrentSection(1);
-
     };
 
     //                    event handler                    //
@@ -179,7 +183,7 @@ export default function QnaList() {
     useEffect(() => {
         if (!cookies.accessToken) return;
         getBoardListRequest(cookies.accessToken).then(getBoardListResponse);
-    }, []);
+    }, [isToggleOn]);
 
     useEffect(() => {
         if (!boardList.length) return;
