@@ -13,7 +13,7 @@ export default function QnaUpdate() {
 
     //              state               //
     const contentsRef = useRef<HTMLTextAreaElement | null>(null);
-    const { loginUserId } = useUserStore();
+    const { loginUserId, loginUserRole } = useUserStore();
     const { receptionNumber } = useParams();
     const [cookies] = useCookies();
     const [writerId, setWriterId] = useState<string>('');
@@ -38,7 +38,7 @@ export default function QnaUpdate() {
             return;
         }
 
-        const { writerId, title, contents } = result as GetBoardResponseDto;
+        const { writerId, title, contents, status } = result as GetBoardResponseDto;
         if (writerId !== loginUserId) {
             alert('권한이 없습니다.');
             navigator(QNA_LIST_ABSOLUTE_PATH);
@@ -84,6 +84,10 @@ export default function QnaUpdate() {
         if (!receptionNumber || !cookies.accessToken) return;
         if (effectFlag) return;
         effectFlag = true;
+        if (loginUserRole !== 'ROLE_USER') {
+            navigator(QNA_LIST_ABSOLUTE_PATH);
+            return;
+        }
         getBoardRequest(receptionNumber, cookies.accessToken).then(getBoardResponse);
     }, []);
 
@@ -97,7 +101,7 @@ export default function QnaUpdate() {
                 <div className='primary-button' onClick={onUpdateButtonClickHandler}>수정</div>
             </div>
             <div className='qna-write-contents-box'>
-                <textarea ref={contentsRef} className='qna-write-contents-textarea' placeholder='내용을 입력해주세요. / 1000자'  maxLength={1000} value={contents} onChange={onContentsChangeHandler} />
+                <textarea ref={contentsRef} className='qna-write-contents-textarea' placeholder='내용을 입력해주세요. / 1000자' maxLength={1000} value={contents} onChange={onContentsChangeHandler} />
             </div>
         </div>
     );
