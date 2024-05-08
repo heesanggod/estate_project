@@ -158,7 +158,7 @@ export default function QnaList() {
     };
 
     const onPreSectionClickHandler = () => {
-        if (currentSection === 1) return;
+        if (currentSection <= 1) return;      // === 1  일때는 오직 1일경우만 잡아서 0이 와야될상황이 있기 때문에 <= 가 맞음
         setCurrentSection(currentSection - 1);
         setCurrentPage((currentSection - 1) * COUNT_PER_SECTION);
     };
