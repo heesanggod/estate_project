@@ -1,22 +1,27 @@
 import React, { useState } from 'react';
 import './style.css';
 
+interface Prop {
+    value: string;
+    onChange: (value:string) => void;
+}
+
 //                  component                   //
-export default function SelectBox() {
+export default function SelectBox({ value, onChange }: Prop) {
 
     const listItem = [
-        { name: '전국', vlaue: ''  },
-        { name: '수도권', vlaue: ''  },
-        { name: '지방', vlaue: ''  },
-        { name: '서울', vlaue: ''  },
-        { name: '부산', vlaue: ''  },
-        { name: '대구', vlaue: ''  },
-        { name: '인천', vlaue: ''  },
-        { name: '광주', vlaue: ''  },
-        { name: '대전', vlaue: ''  },
-        { name: '울산', vlaue: ''  },
-        { name: '세종', vlaue: ''  },
-        { name: '경기', vlaue: ''  },
+        { name: '전국', value: '전국'  },
+        { name: '수도권', value: '수도권'  },
+        { name: '지방', value: '지방'  },
+        { name: '서울', value: '서울'  },
+        { name: '부산', value: '부산'  },
+        { name: '대구', value: '대구'  },
+        { name: '인천', value: '인천'  },
+        { name: '광주', value: '광주'  },
+        { name: '대전', value: '대전'  },
+        { name: '울산', value: '울산'  },
+        { name: '세종', value: '세종'  },
+        { name: '경기', value: '경기'  },
     ]
 
     //                  state                  //
@@ -26,8 +31,8 @@ export default function SelectBox() {
     const onButtonClickHandler = () => {
         setShow(!show);
     };
-    const onItemClickHandler = () => {
-
+    const onItemClickHandler = (value: string) => {
+        onChange(value);
         setShow(false);
     };
 
@@ -41,7 +46,7 @@ export default function SelectBox() {
             {show && 
             <div className='select-list'>
                 {listItem.map((item) =>
-                <div className='select-list-item-box' onClick={onItemClickHandler} >
+                <div className='select-list-item-box' onClick={() => onItemClickHandler(item.value)} >
                     <div className='select-item'>{item.name}</div>
                 </div>
                 )}
