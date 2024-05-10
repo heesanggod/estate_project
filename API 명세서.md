@@ -1631,10 +1631,10 @@ curl -v -X PUT "http://localhost:4000/api/v1/estate/local/{local}" \
 | leaseRatio4060 | double[] | 40m2 초과 60m2 이하 매매가 대비 전세가 비율 리스트 | O |
 | leaseRatio6085 | double[] | 60m2 초과 85m2 이하 매매가 대비 전세가 비율 리스트 | O |
 | leaseRatio85 | double[] | 85m2 초과 매매가 대비 전세가 비율 리스트 | O |
-| monthRenteRatio40 | double[] | 40m2 이하 전세가 대비 월세 보증금 비율 리스트 | O |
-| monthRenteRatio4060 | double[] | 40m2 초과 60m2 이하 전세가 대비 월세 보증금 비율 리스트 | O |
-| monthRenteRatio6085 | double[] | 60m2 초과 85m2 이하 전세가 대비 월세 보증금 비율 리스트 | O |
-| monthRenteRatio85 | double[] | 85m2 초과 전세가 대비 월세 보증금 비율 리스트 | O |
+| monthRentRatio40 | double[] | 40m2 이하 전세가 대비 월세 보증금 비율 리스트 | O |
+| monthRentRatio4060 | double[] | 40m2 초과 60m2 이하 전세가 대비 월세 보증금 비율 리스트 | O |
+| monthRentRatio6085 | double[] | 60m2 초과 85m2 이하 전세가 대비 월세 보증금 비율 리스트 | O |
+| monthRentRatio85 | double[] | 85m2 초과 전세가 대비 월세 보증금 비율 리스트 | O |
 
 ###### Example
 
@@ -1654,10 +1654,10 @@ Content-Type: application/json;charset=UTF-8
   "leaseRatio4060": [10.4, 11.1, 10.0, ..., 9.8],
   "leaseRatio6085": [10.4, 11.1, 10.0, ..., 9.8],
   "leaseRatio85": [10.4, 11.1, 10.0, ..., 9.8],
-  "monthRenteRatio40": [10.4, 11.1, 10.0, ..., 9.8],
-  "monthRenteRatio4060": [10.4, 11.1, 10.0, ..., 9.8],
-  "monthRenteRatio6085": [10.4, 11.1, 10.0, ..., 9.8],
-  "monthRenteRatio85": [10.4, 11.1, 10.0, ..., 9.8],
+  "monthRentRatio40": [10.4, 11.1, 10.0, ..., 9.8],
+  "monthRentRatio4060": [10.4, 11.1, 10.0, ..., 9.8],
+  "monthRentRatio6085": [10.4, 11.1, 10.0, ..., 9.8],
+  "monthRentRatio85": [10.4, 11.1, 10.0, ..., 9.8],
 }
 ```
 
