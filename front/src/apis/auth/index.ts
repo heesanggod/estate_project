@@ -14,7 +14,7 @@ export const signInRequest = async (requestBody: SignInRequestDto) => {
 };
 
 // function: 아이디 중복 확인 API 함수 
-export const IdCheckRequest = async (requestBody: IdCheckRequestDto) => {
+export const idCheckRequest = async (requestBody: IdCheckRequestDto) => {
     const result = await axios.post(ID_CHECK_REQUEST_URL, requestBody)
         .then(requestHandler<ResponseDto>)
         .catch(requestErrorHandler);
