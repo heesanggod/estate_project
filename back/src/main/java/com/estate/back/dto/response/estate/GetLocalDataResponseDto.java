@@ -9,9 +9,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
+import com.estate.back.common.util.ChangeDateFormatUtil;
 import com.estate.back.dto.response.ResponseCode;
 import com.estate.back.dto.response.ResponseDto;
 import com.estate.back.dto.response.ResponseMessage;
+import com.estate.back.repository.resultSet.GetLocalDataResultSet;
 
 import lombok.Getter;
 
@@ -22,16 +24,31 @@ public class GetLocalDataResponseDto extends ResponseDto {
     private List<Integer> lease;
     private List<Integer> monthRent;
 
-    private GetLocalDataResponseDto () {
+    private GetLocalDataResponseDto (List<GetLocalDataResultSet> resultSets) throws Exception {
         super (ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
-        this.yearMonth = null;
-        this.sale = null;
-        this.lease = null;
-        this.monthRent= null;
+
+        List<String> yearMonth = new ArrayList<>();
+        List<Integer> sale = new ArrayList<>();
+        List<Integer> lease = new ArrayList<>();
+        List<Integer> monthRent = new ArrayList<>();
+
+        for (GetLocalDataResultSet resultSet: resultSets) {
+            String originalDate = resultSet.getYearMonth();
+            yearMonth.add(ChangeDateFormatUtil.changeYYMM(originalDate));
+            sale.add(resultSet.getSale());
+            lease.add(resultSet.getLease());
+            monthRent.add(resultSet.getMonthRent());
+        }
+
+        this.yearMonth = yearMonth;
+        this.sale = sale;
+        this.lease = lease;
+        this.monthRent= monthRent;
     }
 
-    public static ResponseEntity<GetLocalDataResponseDto> success(String Data) {
-        GetLocalDataResponseDto responseBody = new GetLocalDataResponseDto();
+    public static ResponseEntity<GetLocalDataResponseDto> success(List<GetLocalDataResultSet> resultSets) throws Exception {
+        GetLocalDataResponseDto responseBody = new GetLocalDataResponseDto(resultSets);
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
+
 }
