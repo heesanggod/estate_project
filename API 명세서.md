@@ -1348,7 +1348,6 @@ Content-Type: application/json;charset=UTF-8
 
 ***
 
-
 #### - Q&A 게시물 수정  
   
 ##### 설명
@@ -1475,19 +1474,20 @@ Content-Type: application/json;charset=UTF-8
 }
 ```
 
-<h2 style='background-color: rgba(55, 55, 55, 0.2); text-align: center'>Estate모듈</h2>
+<h2 style='background-color: rgba(55, 55, 55, 0.2); text-align: center'>Estate 모듈</h2>
 
-오피스텔 부동산 가격 정보와 관련된 REst APT 모듈
-지역 평균 데이터, 비율
+오피스텔 부동산 가격 정보와 관련된 REST API 모듈  
+지역 평균 데이터, 비율 관련 데이터 API가 포함되어 있습니다.  
   
 - url : /api/v1/auth  
 
+***
 
-#### - 지역 평균 데이터 불러오기 
+#### - 지역 평균 데이터 불러오기  
   
 ##### 설명
 
-클라이언트로부터 Request Header의 Authorization 필드로 Bearer 토큰을 포함하여 접수 번호, 제목, 내용을 입력받고 불러오기에 성공하면 성공처리를 합니다. (매매가, 전세가, 월세 보증금 데이터의 단위는 천원 단위) 만약 불러오기에 실패하면 실패처리 됩니다. 인가 실패, 데이터베이스 에러, 데이터 유효성 검사 실패가 발생할 수 있습니다.
+클라이언트로부터 Request Header의 Authorization 필드로 Bearer 토큰을 포함하여 지역을 입력받고 불러오기에 성공하면 성공처리를 합니다. (매매가, 전세가, 월세 보증금 데이터의 단위는 천원 단위) 만약 불러오기에 실패하면 실패처리 됩니다. 인가 실패, 데이터베이스 에러, 데이터 유효성 검사 실패가 발생할 수 있습니다.
 
 - method : **GET**  
 - URL : **/local/{local}**  
@@ -1510,7 +1510,7 @@ Content-Type: application/json;charset=UTF-8
 
 ```bash
 curl -v -X PUT "http://localhost:4000/api/v1/estate/local/{local}" \
- -H "Authorization: Bearer {JWT}" \
+ -H "Authorization: Bearer {JWT}" 
 ```
 
 ##### Response
@@ -1528,9 +1528,9 @@ curl -v -X PUT "http://localhost:4000/api/v1/estate/local/{local}" \
 | code | String | 결과 코드 | O |
 | message | String | 결과 메세지 | O |
 | yearMonth | String[] | 연월 리스트 | O |
-| sale | String[] | 매매가 리스트 | O |
-| lease | String[] | 전세가 리스트 | O |
-| monthRent | String[] | 월세 보증금 리스트 | O |
+| sale | int[] | 매매가 리스트 | O |
+| lease | int[] | 전세가 리스트 | O |
+| monthRent | int[] | 월세 보증금 리스트 | O |
 
 ###### Example
 
@@ -1541,10 +1541,10 @@ Content-Type: application/json;charset=UTF-8
 {
   "code": "SU",
   "message": "Success.",
-  "yearMonth": [  '23-01', '23-02', '23-03', ... , '23-12' ],
-  "sale" : [4525, 4855, 4755, ... , 4621],
-  "lease" : [4525, 4855, 4755, ... , 4621],
-  "monthRent" : [4525, 4855, 4755, ... , 4621],
+  "yearMonth": ['23-01', '23-02', '23-03', ... , '23-12'],
+  "sale": [4525, 4855, 4755, ..., 4621],
+  "lease": [4525, 4855, 4755, ..., 4621],
+  "monthRent": [4525, 4855, 4755, ..., 4621],
 }
 ```
 
