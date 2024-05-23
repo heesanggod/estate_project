@@ -39,6 +39,7 @@ function TopBar({ path }: Props) {
             <div className="top-bar-title">{ path }</div>
             <div className="top-bar-right">
                 { loginUserRole === 'ROLE_ADMIN' && <div className="top-bar-role">관리자</div> }
+                { loginUserRole !== 'ROLE_ADMIN' && <div className="top-bar-role">내정보</div> }
                 <div className="second-button" onClick={onLogoutClickHandler}>로그아웃</div>
             </div>
         </div>
